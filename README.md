@@ -300,14 +300,6 @@ GitHub Actions workflows are included for:
 
 ## Roadmap
 
-Near-term goals for the repository usually include:
-
-- establishing a stable library interface
-- expanding tests
-- improving example applications
-- refining template readiness
-- documenting preferred architecture patterns
-
 
 ## License
 
