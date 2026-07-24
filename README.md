@@ -31,12 +31,6 @@ cmake --build --preset debug
 ctest --test-dir build/debug --output-on-failure
 ```
 
-Generate documentation:
-
-```sh
-./generate_docs.sh
-```
-
 If you want dependency resolution through `vcpkg`:
 
 ```sh
