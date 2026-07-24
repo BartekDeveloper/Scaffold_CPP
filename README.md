@@ -18,9 +18,8 @@ The codebase is intentionally small right now and is expected to grow into a reu
 
 ## Project Status
 
-This repository is currently in scaffold stage.
-
-That means the build system, tooling, and repository structure are being established first. Core application logic, public headers, and fuller tests may be added later.
+This repository is currently in scaffold stage 😉
+That means the build system, tooling, and repository structure are being present only. 
 
 ## QUICK_START
 
