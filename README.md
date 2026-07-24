@@ -1,3 +1,6 @@
+# NOTE: VCPKG is still broken, there are little more issues (CI/CD ones) too.
+# DO NOT USE YET UNLESS YOU KNOW HOW TO FIX IT.
+
 # Scaffold
 
 Modern C++ project scaffold built using CMake and focused on a clean local development workflow.
