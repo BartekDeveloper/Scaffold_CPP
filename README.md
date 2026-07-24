@@ -61,24 +61,40 @@ Script alternatives:
 
 ```text
 .
-├── CMakeLists.txt
-├── CMakePresets.json
-├── CODE_CONVENTIONS.md
-├── CONTRIBUTING_GUIDE.md
-├── CONTRIBUTORS.md
-├── Doxyfile.in
-├── GUIDE.MD
-├── include
-├── lib
-│   ├── interface.hpp
-│   ├── interfaces/
-│   └── lib.cpp
-├── LICENSE.md
-├── README.md
+├── vcpkg.json
+├── tests
+│   └── tests.cpp
 ├── testapp
 │   └── testapp.cpp
-└── tests
-    └── tests.cpp
+├── scripts
+│   ├── tidy.sh
+│   ├── tidy.ps1
+│   ├── test.sh
+│   ├── test.ps1
+│   ├── install.sh
+│   ├── install.ps1
+│   ├── generate_docs.sh
+│   ├── generate_docs.ps1
+│   ├── format.sh
+│   ├── format.ps1
+│   ├── build.sh
+│   └── build.ps1
+├── lib
+│   ├── lib.cpp
+│   ├── interfaces
+│   └── interface.hpp
+├── generate_docs.sh
+├── cmake
+│   └── MyLibConfig.cmake.in
+├── README.md
+├── LICENSE.md
+├── GUIDE.MD
+├── Doxyfile.in
+├── CONTRIBUTORS.md
+├── CONTRIBUTING_GUIDE.md
+├── CODE_CONVENTIONS.md
+├── CMakePresets.json
+└── CMakeLists.txt
 ```
 
 (generated via 'tree .')
