@@ -97,7 +97,7 @@ Script alternatives:
 └── CMakeLists.txt
 ```
 
-(generated via 'tree .')
+(generated via 'tree --gitignore -C -vr -L 2')
 
 
 ## Requirements
