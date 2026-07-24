@@ -1,0 +1,102 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/scaffold
+
+jobs:
+  linux-release-gcc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install toolchain
+        run: sudo apt-get update && sudo apt-get install -y ninja-build cmake g++ gcc clang-format clang-tidy doxygen zip tar gzip
+      - name: Install project
+        run: ./scripts/install.sh release-gcc "${{ github.workspace }}/artifacts/install/linux-gcc"
+      - name: Archive install tree
+        run: tar -C "${{ github.workspace }}/artifacts/install" -czf "${{ github.workspace }}/artifacts/scaffold-linux-gcc-${{ github.event.release.tag_name }}.tar.gz" linux-gcc
+      - name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ github.workspace }}/artifacts/scaffold-linux-gcc-${{ github.event.release.tag_name }}.tar.gz" --clobber
+
+  linux-release-clang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install toolchain
+        run: sudo apt-get update && sudo apt-get install -y ninja-build cmake clang clang++ clang-format clang-tidy doxygen zip tar gzip
+      - name: Install project
+        run: ./scripts/install.sh release-clang "${{ github.workspace }}/artifacts/install/linux-clang"
+      - name: Archive install tree
+        run: tar -C "${{ github.workspace }}/artifacts/install" -czf "${{ github.workspace }}/artifacts/scaffold-linux-clang-${{ github.event.release.tag_name }}.tar.gz" linux-clang
+      - name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ github.workspace }}/artifacts/scaffold-linux-clang-${{ github.event.release.tag_name }}.tar.gz" --clobber
+
+  windows-release-msvc:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup MSVC dev shell
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Install project
+        shell: pwsh
+        run: ./scripts/install.ps1 -Preset release-msvc -Prefix artifacts/install/windows-msvc
+      - name: Build NuGet package
+        shell: pwsh
+        run: cpack --config build/release-msvc/CPackConfig.cmake -G NuGet -B artifacts/packages
+      - name: Archive install tree
+        shell: pwsh
+        run: Compress-Archive -Path artifacts/install/windows-msvc/* -DestinationPath artifacts/scaffold-windows-msvc-${{ github.event.release.tag_name }}.zip -Force
+      - name: Upload release assets
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" "artifacts/scaffold-windows-msvc-${{ github.event.release.tag_name }}.zip" --clobber
+          Get-ChildItem artifacts/packages/*.nupkg | ForEach-Object { gh release upload "${{ github.event.release.tag_name }}" $_.FullName --clobber }
+      - name: Publish NuGet to GitHub Packages
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $source = "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          dotnet nuget add source $source --name github --username ${{ github.actor }} --password $env:GITHUB_TOKEN --store-password-in-clear-text
+          Get-ChildItem artifacts/packages/*.nupkg | ForEach-Object { dotnet nuget push $_.FullName --source github --api-key $env:GITHUB_TOKEN --skip-duplicate }
+
+  ghcr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate container metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ github.event.release.tag_name }}
+            type=raw,value=latest
+      - name: Build and publish image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          file: .github/docker/release.Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

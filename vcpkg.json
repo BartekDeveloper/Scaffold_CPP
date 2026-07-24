@@ -1,0 +1,9 @@
+{
+    "name": "MyLib",
+    "version-string": "1.0.0",
+    "description": "Scaffolded C++ project",
+    "license": "MIT",
+    "dependencies": [
+        "gtest"
+    ]
+}
