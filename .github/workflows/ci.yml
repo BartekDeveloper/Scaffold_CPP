@@ -89,9 +89,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          runVcpkgInstall: true
       - name: Install docs toolchain
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: sudo apt-get update && sudo apt-get install -y ninja-build cmake doxygen clang-format
       - name: Generate docs
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: ./scripts/generate_docs.sh
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4

@@ -24,6 +24,24 @@
 
 cmake_minimum_required(VERSION 3.25)
 
+option(SCAFFOLD_SILENCE_RENAME_REMINDER "Silence the scaffold rename reminder messages" OFF)
+
+if(NOT SCAFFOLD_SILENCE_RENAME_REMINDER)
+    message(WARNING
+        "================================================================================\n"
+        " Scaffold C++ template detected — this is a sample project named 'MyLib'.\n"
+        " Before shipping, rename MyLib -> YourProjectName and 'vcpkg' package name\n"
+        " 'scaffold-cpp' in:\n"
+        "   - CMakeLists.txt          (project(), all add_library/target calls, CPACK_*)\n"
+        "   - CMakePresets.json       (preset names, hidden base preset names)\n"
+        "   - vcpkg.json              (manifest 'name' / 'version-string')\n"
+        "   - lib/, testapp/, tests/  (any #include paths/namespaces/types)\n"
+        "   - cmake/                  (generated MyLibConfig*.cmake.in files)\n"
+        " Pass -DSCAFFOLD_SILENCE_RENAME_REMINDER=ON to hide this message.\n"
+        "================================================================================"
+    )
+endif()
+
 set(DISABLE_RECOMMENDED_COMPILER OFF CACHE BOOL "Disable automatic selection of the recommended compiler when available")
 
 if(NOT DISABLE_RECOMMENDED_COMPILER)
@@ -397,3 +415,15 @@ set(CPACK_NUGET_PACKAGE_REPOSITORY_TYPE "git")
 set(CPACK_NUGET_PACKAGE_TFMS "native")
 
 include(CPack)
+
+if(NOT SCAFFOLD_SILENCE_RENAME_REMINDER)
+    message(STATUS
+        "================================================================================\n"
+        " Scaffold configuration complete.\n"
+        " Selected build type      : ${CMAKE_BUILD_TYPE}\n"
+        " Project (scaffold) name  : MyLib  -> rename to your project name\n"
+        " vcpkg manifest name      : scaffold-cpp  -> rename in vcpkg.json\n"
+        " Set -DSCAFFOLD_SILENCE_RENAME_REMINDER=ON to silence scaffold reminders.\n"
+        "================================================================================"
+    )
+endif()
