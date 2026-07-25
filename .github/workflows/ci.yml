@@ -9,10 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          runVcpkgInstall: true
       - name: Install toolchain
         run: sudo apt-get update && sudo apt-get install -y ninja-build cmake g++ gcc clang-format clang-tidy doxygen
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       - name: Build
         run: ./scripts/build.sh ci-gcc
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       - name: Test
         run: ./scripts/test.sh ci-gcc
 
@@ -20,7 +29,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          runVcpkgInstall: true
       - name: Install toolchain
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -31,25 +47,42 @@ jobs:
           sudo ln -sf /usr/bin/clang-format-18 /usr/local/bin/clang-format
           sudo ln -sf /usr/bin/clang-tidy-18 /usr/local/bin/clang-tidy
       - name: Build
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: ./scripts/build.sh ci-clang
       - name: Test
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: ./scripts/test.sh ci-clang
       - name: Format check
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: ./scripts/format.sh ci-clang --check
       - name: Tidy
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
         run: ./scripts/tidy.sh ci-clang
 
   windows-msvc:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: '${{ github.workspace }}\vcpkg'
+          runVcpkgInstall: true
       - name: Setup MSVC dev shell
         uses: ilammy/msvc-dev-cmd@v1
       - name: Build
         shell: pwsh
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}\vcpkg
         run: ./scripts/build.ps1 -Preset ci-msvc
       - name: Test
         shell: pwsh
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}\vcpkg
         run: ./scripts/test.ps1 -Preset ci-msvc
 
   docs:
