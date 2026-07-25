@@ -303,7 +303,7 @@ add_executable(TestApp_MyLib
 )
 
 target_link_libraries(TestApp_MyLib PRIVATE MyLib)
-apply_found_warnings(TestApp_MyLib)
+apply_FOUND_warnings(TestApp_MyLib)
 
 if(ALLOCATOR_LIBRARIES)
     target_link_libraries(TestApp_MyLib PRIVATE ${ALLOCATOR_LIBRARIES})
@@ -327,7 +327,8 @@ if(BUILD_TESTING)
 
         FetchContent_Declare(
             googletest
-            URL https://github.com/google/googletest/archive/03597035d31ef24ead57242d506042125f168122.zip
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG 58d77fa8070e8cec2dc1ed015d66b454c8d78850
         )
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
         FetchContent_MakeAvailable(googletest)

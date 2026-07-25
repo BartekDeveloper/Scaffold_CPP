@@ -12,13 +12,7 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-            }
-        },
-        {
-            "name": "vcpkg-base",
-            "hidden": true,
-            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
             }
         },
@@ -248,11 +242,6 @@
             }
         },
         {
-            "name": "debug-vcpkg",
-            "displayName": "Debug (vcpkg)",
-            "inherits": ["debug-base", "vcpkg-base"]
-        },
-        {
             "name": "debug-gcc",
             "displayName": "Debug (GCC)",
             "inherits": "debug-gcc-base"
@@ -268,16 +257,6 @@
             "inherits": "debug-msvc-base"
         },
         {
-            "name": "debug-asan-vcpkg",
-            "displayName": "Debug (Address Sanitizer, vcpkg)",
-            "inherits": ["debug-asan", "vcpkg-base"]
-        },
-        {
-            "name": "release-vcpkg",
-            "displayName": "Release (vcpkg)",
-            "inherits": ["release-base", "vcpkg-base"]
-        },
-        {
             "name": "release-gcc",
             "displayName": "Release (GCC)",
             "inherits": "release-gcc-base"
@@ -291,11 +270,6 @@
             "name": "docs",
             "displayName": "Documentation",
             "inherits": "docs-base"
-        },
-        {
-            "name": "docs-vcpkg",
-            "displayName": "Documentation (vcpkg)",
-            "inherits": ["docs-base", "vcpkg-base"]
         },
         {
             "name": "ci-gcc",
@@ -353,10 +327,6 @@
             "configurePreset": "release-thinlto"
         },
         {
-            "name": "debug-vcpkg",
-            "configurePreset": "debug-vcpkg"
-        },
-        {
             "name": "debug-gcc",
             "configurePreset": "debug-gcc"
         },
@@ -369,14 +339,6 @@
             "configurePreset": "debug-msvc"
         },
         {
-            "name": "debug-asan-vcpkg",
-            "configurePreset": "debug-asan-vcpkg"
-        },
-        {
-            "name": "release-vcpkg",
-            "configurePreset": "release-vcpkg"
-        },
-        {
             "name": "release-gcc",
             "configurePreset": "release-gcc"
         },
@@ -387,10 +349,6 @@
         {
             "name": "docs",
             "configurePreset": "docs"
-        },
-        {
-            "name": "docs-vcpkg",
-            "configurePreset": "docs-vcpkg"
         },
         {
             "name": "ci-gcc",
