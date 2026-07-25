@@ -1,5 +1,5 @@
 {
-    "name": "MyLib",
+    "name": "scaffold-cpp",
     "version-string": "1.0.0",
     "description": "Scaffolded C++ project",
     "license": "MIT",
