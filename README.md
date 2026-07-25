@@ -1,3 +1,5 @@
+[![CI](https://github.com/BartekDeveloper/Scaffold_CPP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BartekDeveloper/Scaffold_CPP/actions/workflows/ci.yml)
+
 # NOTE: VCPKG is still broken, there are little more issues (CI/CD ones) too.
 # DO NOT USE YET UNLESS YOU KNOW HOW TO FIX IT.
 
