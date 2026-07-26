@@ -174,19 +174,15 @@ Or use the helper scripts:
 Included presets are:
 
 - `debug`
-- `debug-vcpkg`
 - `debug-gcc`
 - `debug-clang`
 - `debug-msvc`
 - `debug-asan`
-- `debug-asan-vcpkg`
 - `debug-ubsan`
 - `debug-tsan`
 - `debug-msan`
 - `docs`
-- `docs-vcpkg`
 - `release`
-- `release-vcpkg`
 - `release-msvc`
 - `release-lto`
 - `release-thinlto`
