@@ -4,8 +4,8 @@
 
 namespace MyLib {
 
-std::string Hello() {
-    return "World";
-}
+    std::string Hello() {
+        return "World";
+    }
 
 }; // namespace MyLib

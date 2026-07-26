@@ -6,7 +6,7 @@
 
 namespace MyLib {
 
-[[nodiscard]] std::string Hello();
+    [[nodiscard]] std::string Hello();
 
 }; // namespace MyLib
 

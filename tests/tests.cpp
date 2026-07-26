@@ -4,8 +4,8 @@
 
 namespace {
 
-TEST(ScaffoldTests, BuildGreetingFormatsTheSubject) {
-    EXPECT_EQ(MyLib::Hello(), "World");
-}
+    TEST(ScaffoldTests, BuildGreetingFormatsTheSubject) {
+        EXPECT_EQ(MyLib::Hello(), "World");
+    }
 
 } // namespace
